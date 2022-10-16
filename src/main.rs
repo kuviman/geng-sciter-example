@@ -53,7 +53,6 @@ impl geng::State for Test {
                 ugli::clear(&mut framebuffer, Some(Rgba::TRANSPARENT_BLACK), None, None);
                 self.overlay = Rc::new(RefCell::new(texture));
             }
-            println!("RESIZE");
             handle_message(
                 WND,
                 sw::Message::Size {
@@ -74,7 +73,6 @@ impl geng::State for Test {
                         for i in (0..data.len()).step_by(4) {
                             data.swap(i, i + 2);
                         }
-                        println!("DRAW {:?}", rect);
                         overlay.borrow_mut().sub_image(
                             vec2(rect.left, rect.top).map(|x| x as usize),
                             vec2(rect.width(), rect.height()).map(|x| x as usize),
@@ -171,13 +169,13 @@ fn main() {
     }
     println!("create sciter instance");
     sciter::set_options(sciter::RuntimeOptions::UxTheming(true)).unwrap();
-    sciter::set_options(sciter::RuntimeOptions::DebugMode(true)).unwrap();
+    // sciter::set_options(sciter::RuntimeOptions::DebugMode(true)).unwrap();
     sciter::set_options(sciter::RuntimeOptions::ScriptFeatures(0xFF)).unwrap();
 
     handle_message(
         WND,
         sw::Message::Create {
-            backend: sciter::types::GFX_LAYER::CPU,
+            backend: sciter::types::GFX_LAYER::SKIA_OPENGL,
             transparent: true,
         },
     );
